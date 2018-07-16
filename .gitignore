@@ -1,3 +1,4 @@
 .vscode/*
 *.pyc
 *.nvp
+mnist_result/*
