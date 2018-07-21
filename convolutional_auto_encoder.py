@@ -112,7 +112,6 @@ def train_model():
             print('epoch:{:02d} train_loss:{:.04f} '.format(
                 train_iter.epoch, float(cuda.to_cpu(loss.data))), end='')
             test_model(model, test_iter)
-    # save trained model
     return model
 
 
@@ -133,12 +132,27 @@ def evaluate_model(path):
     y = model(x).data
     print('x shape: ', x.shape)
     print('y shape: ', y.shape)
-    plt.subplot(1,2,1)
+    plt.subplot(1, 2, 1)
     plt.imshow(x.reshape(28, 28), cmap='gray')
     plt.title('original')
-    plt.subplot(1,2,2)
+    plt.subplot(1, 2, 2)
     plt.imshow(y.reshape(28, 28), cmap='gray')
     plt.title('decoded')
+    plt.show()
+
+
+def show_learned_filters(path):
+    model = CAE()
+    serializers.load_npz(path, model)
+
+    layer = model.conv1 # Change layer to see different results
+
+    for j, filters in enumerate(layer.W):
+        for filter in filters:
+            print('filter shape: ', filter.shape)
+            ksize = layer.ksize
+            plt.subplot(1, len(layer.W), j + 1)
+            plt.imshow(filter.data.reshape(ksize, ksize), cmap='gray')
     plt.show()
 
 
@@ -147,6 +161,7 @@ def main():
     model = train_model()
     save_model(path, model)
     evaluate_model(path)
+    show_learned_filters(path)
 
 
 if __name__ == '__main__':
