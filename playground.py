@@ -26,9 +26,20 @@ def gaussian_kl_divergence():
     print('computed_kld: ', computed_kld)
 
 
-def main():
-    gaussian_kl_divergence()
+def mean_squared_error():
+    rows = 10
+    columns = 10
+    fake_image_data1 = np.random.rand(rows, columns)
+    fake_image_data2 = np.random.rand(rows, columns)
 
+    expected_mse = np.sum((fake_image_data1.flatten() - fake_image_data2.flatten()) ** 2) / (rows * columns)
+    computed_mse = F.mean_squared_error(fake_image_data1, fake_image_data2)
+    print('expected_mse: ', expected_mse)
+    print('computed_mse: ', computed_mse.array)
+
+def main():
+#    gaussian_kl_divergence()
+    mean_squared_error()
 
 if __name__ == '__main__':
     main()
